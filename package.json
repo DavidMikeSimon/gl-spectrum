@@ -35,7 +35,8 @@
     "nice-color-palettes": "^1.0.1",
     "scijs-window-functions": "^2.0.2",
     "settings-panel": "^1.8.16",
-    "spiral-2d": "^1.1.0"
+    "spiral-2d": "^1.1.0",
+    "budo": "*"
   },
   "scripts": {
     "test": "budo test",

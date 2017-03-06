@@ -72,7 +72,7 @@ var audio = appAudio({
 	context: ctx,
 	token: '6b7ae5b9df6a0eb3fcca34cc3bb0ef14',
 	// source: './Liwei.mp3',
-	source: 'https://soundcloud.com/wooded-events/wooded-podcast-cinthie',
+	// source: 'https://soundcloud.com/wooded-events/wooded-podcast-cinthie',
 	// source: 'https://soundcloud.com/compost/cbls-362-compost-black-label-sessions-tom-burclay',
 	// source: isMobile ? './sample.mp3' : 'https://soundcloud.com/vertvrecords/trailer-mad-rey-hotel-la-chapelle-mp3-128kbit-s',
 	// source: isMobile ? './sample.mp3' : 'https://soundcloud.com/robbabicz/rbabicz-lavander-and-the-firefly',
@@ -80,9 +80,10 @@ var audio = appAudio({
 	// source: 'https://soundcloud.com/when-we-dip/atish-mark-slee-manjumasi-mix-when-we-dip-062',
 	// source: 'https://soundcloud.com/dark-textures/dt-darkambients-4',
 	// source: 'https://soundcloud.com/deep-house-amsterdam/diynamic-festival-podcast-by-kollektiv-turmstrasse',
+	source: 'https://soundcloud.com/harperaudio_us/tatiana-and-alexander-by-paullina-simons'
 }).on('load', (node) => {
 	analyser = audio.context.createAnalyser();
-	analyser.smoothingTimeConstant = 0;
+	analyser.smoothingTimeConstant = 0.2;
 	analyser.fftSize = 1024;
 	analyser.minDecibels = -100;
 	analyser.maxDecibels = 0;
@@ -107,33 +108,35 @@ audio.update();
 var spectrum = new Spectrum({
 	// autostart: false,
 	interactions: true,
-	// log: false,
+	log: false,
 	// align: .5,
 	// fill: colormap,
-	// grid: true,
-	// minFrequency: 20,
-	// maxFrequency: 20000,
+	// grid: 0,
+	minFrequency: 500,
+	maxFrequency: 19000,
 	// logarithmic: true,
-	// smoothing: .7,
+	smoothing: .7,
 	// maxDecibels: 0,
-	// align: .5,
+	align: 0.5,
 	// trail: 38,
+	trail: false,
 	// autostart: false,
-	// balance: .5,
+	//balance: .9,
 	// antialias: true,
 	// fill: [1,1,1,0],
 	// fill: './images/stretch.png',
-	// type: 'bar',
+	type: 'line',
 	// barWidth: 1,
-	// weighting: 'z',
+	weighting: 'b',
 	// background: [27/255,0/255,37/255, 1],
 	//background: [1,0,0,1]//'./images/bg-small.jpg'
 	// viewport: function (w, h) {
 	// 	return [50,20,w-70,h-60];
 	// }
 }).on('render', upd)
+spectrum.update({grid: false})
 
-spectrum.grid.update({x: {fontFamily: theme.fontFamily, fontSize: '10px'}});
+//spectrum.grid.update({x: {fontFamily: theme.fontFamily, fontSize: '10px'}});
 // setInterval(upd, 100)
 
 
@@ -248,7 +251,7 @@ let settings = createSettings([
 	{id: 'weighting', label: 'weighting', title: 'Weighting', type: 'select', options: ['a', 'b', 'c', 'd', 'itu', 'z'],
 		value: spectrum.weighting,
 		change: (value) => {
-			spectrum.update({weighting: value, trail: true})
+			spectrum.update({weighting: value, trail: false})
 		}
 	},
 	{id: 'trail', label: 'trail', type: 'checkbox', value: !!spectrum.trail, change: v => spectrum.update({trail: v})

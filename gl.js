@@ -95,20 +95,29 @@ GlSpectrum.prototype.stencil = false;
  * Recalculate number of verteces
  */
 GlSpectrum.prototype.calcPositions = function (type, magnitudes) {
+	var t = Date.now();
 	if (!magnitudes) magnitudes = this.magnitudes;
 
 	var positions = [], l = magnitudes.length;
+	var offset = 5;
 
 	//creating vertices every time is not much slower than
 	if (type === 'line') {
-		for (let i = 0; i < l; i++) {
-			positions[i*2] = i/l;
-			positions[i*2 + 1] = magnitudes[i];
+		for (let i = 0; i < (l - offset); i++) {
+			positions[l + i*2] = 0.5 + i/l;
+			positions[l + i*2 + 1] = magnitudes[i+offset];//*Math.sin(i+t/20);
+			positions[l - i*2] = 0.5 - i/l;
+			positions[l - i*2 - 1] = magnitudes[i+offset];//*Math.sin(i-t/20);
 		}
-		for (let i = l-1, j = 0; j < l; i--, j++) {
-			positions[l*2 + j*2] = i/l;
-			positions[l*2 + j*2 + 1] = -magnitudes[i];
+		for (let i = 0; i < positions.length; i++) {
+			if (i%2 == 1) {
+				positions[i] = positions[i]*Math.sin((i+t*0.15)*0.3);
+			}
 		}
+		//for (let i = l-1, j = 0; j < l; i--, j++) {
+			//positions[l*2 + j*2] = i/l;
+			//positions[l*2 + j*2 + 1] = -magnitudes[i];
+		//}
 	}
 	else if (type === 'fill') {
 		for (let i = 0; i < l; i++) {
